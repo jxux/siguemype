@@ -194,7 +194,6 @@
         @endif        
     </x-table>
 
-    {{ $identity_document_types }}
     <!-- Modal Agregar Cliente -->
     <x-jet-dialog-modal wire:model="agreeModalPerson">
         <x-slot name="title">
