@@ -230,11 +230,65 @@
                 </div>
                 <div class="mb-4" >
                     <x-jet-label value="Nombre comercial"/>
-                    <x-jet-input type="text" class="w-full text-xs" wire:model.defer="name"></x-jet-input>
-                    <x-jet-input-error for="name"/>
+                    <x-jet-input type="text" class="w-full text-xs" wire:model.defer="trade_name"></x-jet-input>
+                    <x-jet-input-error for="trade_name"/>
                 </div>
             </div>
 
+            <div class="grid grid-cols-2 gap-1">
+                <div class="mb-4">
+                    <x-jet-label value="País"/>
+                    <select class="truncate border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm text-xs" wire:model="country_id">
+                        @foreach ($countries as $countrie)
+                            <option class="truncate" value="{{$countrie->id}}">{{$countrie->description}}</option>
+                        @endforeach
+                    </select>
+                    <x-jet-input-error for="name"/>
+                </div>
+                <div class="mb-4">
+                    <x-jet-label value="Departamento"/>
+                    <select class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm text-xs" wire:model="department_id">
+                        {{-- @if ($departments) --}}
+                            {{-- <option value="">Seleccione un Departamento</option> --}}
+
+                            @foreach ($departments as $department)
+                                <option value="{{$department->id}}">{{$department->description}}</option>
+                            @endforeach
+                        {{-- @else
+                            <option value="">Seleccione un País</option>
+                        @endif --}}
+                    </select>
+                    <x-jet-input-error for="name"/>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-1">
+                <div class="mb-4">
+                    <x-jet-label value="Provincia"/>
+                    <select class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm text-xs" wire:model="province_id">
+                        @if ($department_id)
+                            @foreach ($provinces as $province)
+                                <option value="{{$province->id}}">{{$province->description}}</option>
+                            @endforeach
+                        @else
+                            <option value="">Seleccione un Departamento</option>
+                        @endif
+                    </select>
+                    <x-jet-input-error for="name"/>
+                </div>
+                <div class="mb-4">
+                    <x-jet-label value="Distrito"/>
+                    <select class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm text-xs" wire:model="district_id">
+                        @if ($province_id)
+                            @foreach ($districts as $district)
+                                <option value="{{$district->id}}">{{$district->description}}</option>
+                            @endforeach
+                        @else
+                            <option value="">Seleccione una Provincia</option>
+                        @endif
+                    </select>
+                    <x-jet-input-error for="name"/>
+                </div>
+            </div>
         </x-slot>
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$toggle('agreeModalPerson')" wire:loading.attr="disabled">
@@ -245,7 +299,4 @@
             </x-jet-button>
         </x-slot>
     </x-jet-dialog-modal>
-
-
-
 </div>

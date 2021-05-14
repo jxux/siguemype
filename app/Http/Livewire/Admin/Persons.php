@@ -2,7 +2,11 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\System\Catalogs\Country;
+use App\Models\System\Catalogs\Department;
+use App\Models\System\Catalogs\District;
 use App\Models\System\Catalogs\IdentityDocumentType;
+use App\Models\System\Catalogs\Province;
 use App\Models\System\CatIdentityDocumentTypes;
 use App\Models\System\Person;
 use Livewire\Component;
@@ -49,17 +53,22 @@ class Persons extends Component{
 
     public function render(){
 
+        $countries = Country::whereActive()->orderByDescription()->get();
+        $departments = Department::whereActive()->orderByDescription()->get();
+        $provinces = Province::whereActive()->where('department_id', '=' , $this->department_id)->orderByDescription()->get();
+        $districts = District::whereActive()->where('province_id', '=' , $this->province_id)->orderByDescription()->get();
+        $locations = $this->getLocationCascade();
         $identity_document_types = IdentityDocumentType::whereActive()->get();
 
         if($this->readyToLoad){
             $persons = Person::where($this->columns, 'like', '%'. $this->search . '%')
                             ->orderBy($this->sort, $this->direction)
-                            ->paginate(20);            
+                            ->paginate(20);   
         }else{
             $persons = [];
         }
 
-        return view('livewire.admin.persons', compact('persons', 'identity_document_types'));
+        return view('livewire.admin.persons', compact('persons', 'identity_document_types', 'countries', 'departments', 'provinces', 'districts', 'locations', 'identity_document_types'));
     }
 
     // Inicio modal - agregar Person
@@ -77,6 +86,43 @@ class Persons extends Component{
     }
     // Fin modal - agregar Person
 
+
+
+
+
+
+
+    public function getLocationCascade(){
+        $locations = [];
+        $departments = Department::where('active', true)->get();
+        foreach ($departments as $department)
+        {
+            $children_provinces = [];
+            foreach ($department->provinces as $province)
+            {
+                $children_districts = [];
+                foreach ($province->districts as $district)
+                {
+                    $children_districts[] = [
+                        'value' => $district->id,
+                        'label' => $district->description
+                    ];
+                }
+                $children_provinces[] = [
+                    'value' => $province->id,
+                    'label' => $province->description,
+                    'children' => $children_districts
+                ];
+            }
+            $locations[] = [
+                'value' => $department->id,
+                'label' => $department->description,
+                'children' => $children_provinces
+            ];
+        }
+
+        return $locations;
+    }
 
     public function order($sort){
         if ($this->sort = $sort) {
