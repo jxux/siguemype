@@ -107,7 +107,6 @@
         </div>
     @endif
 
-
     <!-- Modal Agregar Cuenta -->
     <x-jet-dialog-modal wire:model="agreeModalCuenta">
         <x-slot name="title">
@@ -167,16 +166,13 @@
         <x-slot name="title">
             Elimnar cuenta
         </x-slot>
-
         <x-slot name="content">
             ¿Está seguro de que desea eliminar esta cuenta?
         </x-slot>
-
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$toggle('confirmingCuentaDeletion')" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
-
             <x-jet-danger-button class="ml-2" wire:click="deleteCuenta" wire:loading.attr="disabled">
                 {{ __('Delete') }}
             </x-jet-danger-button>

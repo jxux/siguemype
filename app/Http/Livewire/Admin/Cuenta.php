@@ -13,15 +13,14 @@ class Cuenta extends Component{
     public $search;
     public $sort = 'id';
     public $direction = 'desc';
+    public $cuenta, $code, $name;
+    
+    public $agreeModalCuenta = false;
+    public $editModalCuenta = false;
     public $confirmingCuentaDeletion = false;
     public $CuentaIdBeingDeleted;
     public $CuentaIdBeingEdit;
-
-    public $agreeModalCuenta = false;
-    public $cuenta, $code, $name;
-
-    public $editModalCuenta = false;
-
+    
 
     protected $rules = [
         'code' => 'required|unique:Binnacles_categories,code|min:3|max:5',

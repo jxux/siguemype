@@ -20,9 +20,11 @@ class Persons extends Component{
     public $search;
     public $sort = 'id';
     public $direction = 'desc';
-    public $readyToLoad = false;
+    public $readyToLoad = false;  
 
-    public $identity_document_type_id = '6',
+    public 
+        $person,
+        $identity_document_type_id = '6',
         $internal_code,
         $number,
         $name,
@@ -43,6 +45,23 @@ class Persons extends Component{
         $addresses = [];
 
     public $agreeModalPerson = false;
+    public $editModalPerson = false;
+    public $confirmingPersonDeletion = false;
+    public $PersonIdBeingDeleted;
+
+    protected $rules = [
+        'internal_code' => 'required|unique:Persons,internal_code|min:3|max:5',
+        'identity_document_type_id' => 'required',
+        'number' => 'required|unique:Persons,number|max:11',
+        'name' => 'required',
+        'trade_name' => '',
+        'country_id' => 'required',
+        'department_id' => 'required_if:identity_document_type_id,"066',
+        'province_id' => 'required_if:identity_document_type_id,"066',
+        'district_id' => 'required_if:identity_document_type_id,"066',
+        'address' => 'required',
+        'email' => 'nullable|email',
+    ];
 
     public function updatingSearch(){
         $this ->resetPage();
@@ -77,7 +96,7 @@ class Persons extends Component{
         $this->agreeModalPerson = true;
     }
     public function savePerson(){
-        // $this->validate();
+        $this->validate();
         Person::create([
             'identity_document_type_id' => $this->identity_document_type_id,
             'internal_code' => $this->internal_code,
@@ -102,10 +121,63 @@ class Persons extends Component{
     // Fin modal - agregar Person
 
 
+    // Inicio modal - editar Person
+    public function ModalEditPerson($personId){
+        $this->editModalPerson = true;
+        $this->person = Person::findOrFail($personId);
+
+        $this->identity_document_type_id = $this->person->identity_document_type_id;
+        $this->internal_code = $this->person->internal_code;
+        $this->number = $this->person->number;
+        $this->name = $this->person->name;
+        $this->trade_name = $this->person->trade_name;
+        $this->country_id = $this->person->country_id;
+        $this->department_id = $this->person->department_id;
+        $this->province_id = $this->person->province_id;
+        $this->district_id = $this->person->district_id;
+        $this->address = $this->person->address;
+        $this->telephone = $this->person->telephone;
+        $this->email = $this->person->email;
+    
+    }
+    public function updatePerson(){
+        $person = Person::findOrFail($this->person->id);
+        $person->update([
+            'identity_document_type_id' => $this->identity_document_type_id,
+            'internal_code' => $this->internal_code,
+            'number' => $this->number,
+            'name' => $this->name,
+            'trade_name' => $this->trade_name,
+            'country_id' => $this->country_id,
+            'department_id' => $this->department_id,
+            'province_id' => $this->province_id,
+            'district_id' => $this->district_id,
+            'address' => $this->address,
+            'telephone' => $this->telephone,
+            // 'condition' => $this->condition,
+            // 'state' => $this->state,
+            'email' => $this->email,
+            // 'code' => $this->code,
+            // 'name' => $this->name,
+        ]);
+
+        $this->reset('editModalPerson');
+        $this->emit('alert', 'success', 'El cliente se actualizo sastisfactoriamente');
+    }
+    // Fin modal - editar Person
 
 
-
-
+    // Inicio modal - eliminar cliente
+    public function confirmPersonDeletion($personId){
+        $this->confirmingPersonDeletion = true;
+        $this->PersonIdBeingDeleted = $personId;
+    }
+    public function deletePerson()    {
+        Person::find($this->PersonIdBeingDeleted)->delete();
+        $this->emit('alert', 'danger', 'El cliente ha sido eliminada');
+        $this->confirmingPersonDeletion = false;
+    }
+    // Fin modal - eliminar cliente
 
     public function getLocationCascade(){
         $locations = [];

@@ -168,6 +168,7 @@ return [
         'district_id' => 'distrito',
         'customer_email' => 'correo del cliente',
         'customer_id' => 'cliente',
+        'internal_code' => 'código',
         'voided_description' => 'descripción del motivo de anulación',
         'code' => 'código',
         'unit_type_id' => 'unidad',
