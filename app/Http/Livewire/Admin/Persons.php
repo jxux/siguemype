@@ -23,6 +23,7 @@ class Persons extends Component{
     public $readyToLoad = false;
 
     public $identity_document_type_id = '6',
+        $internal_code,
         $number,
         $name,
         $trade_name,
@@ -41,7 +42,7 @@ class Persons extends Component{
         $comment,
         $addresses = [];
 
-    public $agreeModalPerson = true;
+    public $agreeModalPerson = false;
 
     public function updatingSearch(){
         $this ->resetPage();
@@ -78,10 +79,24 @@ class Persons extends Component{
     public function savePerson(){
         // $this->validate();
         Person::create([
+            'identity_document_type_id' => $this->identity_document_type_id,
+            'internal_code' => $this->internal_code,
+            'number' => $this->number,
+            'name' => $this->name,
+            'trade_name' => $this->trade_name,
+            'country_id' => $this->country_id,
+            'department_id' => $this->department_id,
+            'province_id' => $this->province_id,
+            'district_id' => $this->district_id,
+            'address' => $this->address,
+            'telephone' => $this->telephone,
+            // 'condition' => $this->condition,
+            // 'state' => $this->state,
+            'email' => $this->email,
             // 'code' => $this->code,
             // 'name' => $this->name,
         ]);
-        $this->reset(['agreeModalPerson', 'code', 'name']);
+        $this->reset(['agreeModalPerson', 'internal_code', 'name']);
         $this->emit('alert', 'success', 'El cliente se añadio sastisfactoriamente');
     }
     // Fin modal - agregar Person

@@ -28,3 +28,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/configurations', function
 Route::middleware(['auth:sanctum', 'verified'])->get('/configurations/persons', function () {
     return view('Admin.Config.persons');
 })->name('configurations.persons');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/binnacles', function () {
+    return view('Binnacles.index');
+})->name('binnacles');
