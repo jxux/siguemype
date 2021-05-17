@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Binnacle;
 use App\Models\System\Binnacle;
 use App\Models\System\Binnacles_category;
 use App\Models\System\Binnacles_service;
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,14 +17,22 @@ class Binnacles extends Component{
     // public $search;
     public $sort = 'date';
     public $direction = 'desc';
+    public $binnacle,
+           $description;
     public $readyToLoad = false;
+    public $binnacleDescription = false;
+
+    public function ModalBinnacleDescription($binnacleId){
+        $this->binnacleDescription = true;
+        $this->binnacle = Binnacle::findOrFail($binnacleId);
+        $this->description = $this->binnacle->description;
+    }
 
     public function loadBinnacles(){
         $this->readyToLoad = true;
     }
 
     public function render(){
-        
         $cuenta = Binnacles_category::get();
         $c_costo = Binnacles_service::get();
 
@@ -32,6 +41,7 @@ class Binnacles extends Component{
             // where($this->columns, 'like', '%'. $this->search . '%')
                             // ->
                             orderBy($this->sort, $this->direction)
+                            ->whereBetween('date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
                             ->paginate(20);   
         }else{
             $binnacles = [];

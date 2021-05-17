@@ -89,4 +89,9 @@ class Binnacle extends Model{
     public function setUserAttribute($value){
         $this->attributes['user'] = (is_null($value))?null:json_encode($value);
     }
+
+    //Relacion uno a muchos
+    public function Commentaries(){
+        return $this->hasMany(Reviewer::class);
+    }
 }
