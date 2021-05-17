@@ -1,11 +1,10 @@
 <div wire:init="loadBinnacles">
-    {{ $cuenta }}
     <x-table>
         @if (count($binnacles))
         <table class="min-w-full divide-y divide-gray-200 mx-1">
             <thead class="bg-gray-50">
                 <tr>
-                    <th scope="col" class="w-24 cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('date')">
+                    <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('date')">
                         Fecha
                         @if ($sort == 'date') 
                             @if ($direction == 'asc')
@@ -17,7 +16,7 @@
                             <i class="fas fa-sort float-right mt-1"></i>
                         @endif
                     </th>
-                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('start_time')">
+                    <th scope="col" class="w-28 ursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('start_time')">
                         Inicio
                         @if ($sort == 'start_time') 
                                 @if ($direction == 'asc')
@@ -29,7 +28,7 @@
                                 <i class="fas fa-sort float-right mt-1"></i>
                             @endif
                     </th>
-                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('end_time')">
+                    <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('end_time')">
                         Fin
                         @if ($sort == 'end_time') 
                                 @if ($direction == 'asc')
@@ -41,7 +40,7 @@
                                 <i class="fas fa-sort float-right mt-1"></i>
                             @endif
                     </th>
-                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('hour')">
+                    <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('hour')">
                         Tiempo
                         @if ($sort == 'hour') 
                             @if ($direction == 'asc')
@@ -53,9 +52,9 @@
                             <i class="fas fa-sort float-right mt-1"></i>
                         @endif
                     </th>
-                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('name')">
+                    <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('client_id')">
                         Cliente
-                        @if ($sort == 'name') 
+                        @if ($sort == 'client_id') 
                             @if ($direction == 'asc')
                                 <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
                             @else
@@ -65,9 +64,9 @@
                             <i class="fas fa-sort float-right mt-1"></i>
                         @endif
                     </th>
-                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('name')">
+                    <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('category_id')">
                         Cuenta
-                        @if ($sort == 'name') 
+                        @if ($sort == 'category_id') 
                             @if ($direction == 'asc')
                                 <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
                             @else
@@ -77,9 +76,9 @@
                             <i class="fas fa-sort float-right mt-1"></i>
                         @endif
                     </th>
-                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('name')">
+                    <th scope="col" class="w-32 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('period')">
                         Periodo
-                        @if ($sort == 'name') 
+                        @if ($sort == 'period') 
                             @if ($direction == 'asc')
                                 <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
                             @else
@@ -89,9 +88,9 @@
                             <i class="fas fa-sort float-right mt-1"></i>
                         @endif
                     </th>
-                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('name')">
+                    <th scope="col" class="w-32 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('service_id')">
                         C_costo
-                        @if ($sort == 'name') 
+                        @if ($sort == 'service_id') 
                             @if ($direction == 'asc')
                                 <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
                             @else
@@ -101,9 +100,9 @@
                             <i class="fas fa-sort float-right mt-1"></i>
                         @endif
                     </th>
-                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('name')">
+                    <th scope="col" class="cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('description')">
                         Descripción
-                        @if ($sort == 'name') 
+                        @if ($sort == 'description') 
                             @if ($direction == 'asc')
                                 <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
                             @else
@@ -113,9 +112,9 @@
                             <i class="fas fa-sort float-right mt-1"></i>
                         @endif
                     </th>
-                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('name')">
+                    <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('status')">
                         Avance
-                        @if ($sort == 'name') 
+                        @if ($sort == 'status') 
                             @if ($direction == 'asc')
                                 <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
                             @else
@@ -125,17 +124,8 @@
                             <i class="fas fa-sort float-right mt-1"></i>
                         @endif
                     </th>
-                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('name')">
-                        Observaciones Revisión
-                        @if ($sort == 'name') 
-                            @if ($direction == 'asc')
-                                <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
-                            @else
-                                <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
-                            @endif
-                        @else
-                            <i class="fas fa-sort float-right mt-1"></i>
-                        @endif
+                    <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Observaciones | Revisión
                     </th>
                     <th scope="col" class="relative px-6 py-3">
                         <span class="sr-only">Opciones</span>
@@ -145,63 +135,76 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($binnacles as $binnacle)
                     <tr>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
                                 {{$binnacle->date->format('d/m/y')}}
                             </div>
                         </td>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
                                 {{$binnacle->start_time->format('h:m a')}}
                             </div>
                         </td>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
                                 {{$binnacle->end_time->format('h:m a')}}
                             </div>
                         </td>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
                                 {{$binnacle->hour}}
                             </div>
                         </td>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
                                 {{$binnacle->client_id}}
                             </div>
                         </td>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
                                 {{$binnacle->category_id}}
                             </div>
                         </td>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
                                 {{$binnacle->period->formatLocalized('%b-%Y')}}
                             </div>
                         </td>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
                                 {{$binnacle->service_id}}
                             </div>
                         </td>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
                                 {{$binnacle->description}}
                             </div>
                         </td>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
-                                {{$binnacle->status}}
+                                @if($binnacle->status == 100)
+                                    <span class="border-green-600 border rounded-full py-0 px-4 bg-green-600 text-xs text-white">
+                                        Terminado 
+                                    </span>
+                                @elseif($binnacle->status <= 99 && $binnacle->status >= 25) 
+                                    <span class="border-blue-600 border rounded-full py-0 px-4 bg-blue-600 text-xs text-white">
+                                        Pendiente
+                                    </span>
+                                @else
+                                    <span class="border-red-600 border rounded-full py-0 px-4 bg-red-600 text-xs text-white">
+                                        Pendiente
+                                    </span>
+                                @endif
+                                {{-- {{$binnacle->status}} --}}
                             </div>
                         </td>
-                        <td class="px-6 py-1 ">
+                        <td class="px-6 py-1">
                             <div class="text-xs text-gray-900">
                                 No se tiene observaciones
                             </div>
                         </td>
                         <td class="px-4 py-0 text-xs font-medium">                            
-                            <x-jet-dropdown>
+                            {{-- <x-jet-dropdown>
                                 <x-slot name="trigger">
                                     <button class="cursor-pointer px-6 py-2 text-xs text-blue-500">Opciones</button>
                                 </x-slot>
@@ -213,7 +216,7 @@
                                         {{ __('Delete') }}
                                     </x-jet-dropdown-link>
                                 </x-slot>
-                            </x-jet-dropdown>
+                            </x-jet-dropdown> --}}
                         </td> 
                     </tr>
                 @endforeach

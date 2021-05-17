@@ -13,8 +13,8 @@ class Binnacles extends Component{
     use WithPagination;
 
     // public $columns = 'name';
-    public $search;
-    public $sort = 'id';
+    // public $search;
+    public $sort = 'date';
     public $direction = 'desc';
     public $readyToLoad = false;
 

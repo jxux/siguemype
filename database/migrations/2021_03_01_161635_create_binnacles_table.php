@@ -17,8 +17,8 @@ class CreateBinnaclesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->date('date');
-            $table->datetime('start_time');
-            $table->datetime('end_time');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->time('hour')->nullable();
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('category_id');
