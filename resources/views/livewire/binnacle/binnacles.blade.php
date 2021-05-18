@@ -1,4 +1,16 @@
 <div wire:init="loadBinnacles">
+    <div class="px-6 py-2 flex items-center">
+        <x-jet-label value="Buscar por: "/>
+        <select class="mx-4 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm text-xs" wire:model="columns">
+            <option value="date">Fecha</option>
+            <option value="description">Descripcion</option>
+            <option value="period">Periodo</option>
+        </select>
+        <x-jet-input type="text" wire:model="search" class="flex-1 mr-4 text-xs" placeholder="Buscar por centro de costo"></x-input>
+        <x-jet-button wire:click="ModalBinnacle">
+            Añadir
+        </x-jet-button>
+    </div>
     <x-table>
         @if (count($binnacles))
             <table class="min-w-full divide-y divide-gray-200 mx-1">
@@ -216,7 +228,8 @@
                                     {{-- No se tiene observaciones --}}
                                 </div>
                             </td>
-                            <td class="px-4 py-0 text-xs font-medium">                            
+                            <td class="px-4 py-0 text-xs font-medium">
+                                <button class="btn btn-green" wire:click="ModalEditBinnacle({{ $binnacle->id }})"><i class="far fa-edit"></i></button>
                                 {{-- <x-jet-dropdown>
                                     <x-slot name="trigger">
                                         <button class="cursor-pointer px-6 py-2 text-xs text-blue-500">Opciones</button>
@@ -257,9 +270,9 @@
         @endif   
     </x-table>
 
+    {{-- Modal vista descripcion --}}
     <x-jet-dialog-modal wire:model="binnacleDescription">
         <x-slot name="title">
-
         </x-slot>
         <x-slot name="content">
             <p>
@@ -268,6 +281,36 @@
         </x-slot>
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$toggle('binnacleDescription')" wire:loading.attr="disabled">
+                {{ __('Close') }}
+            </x-jet-secondary-button>
+        </x-slot>
+    </x-jet-dialog-modal>
+
+    {{-- Modal Agregar Parte diario --}}
+    <x-jet-dialog-modal wire:model="agreeModalBinnacle">
+        <x-slot name="title">
+
+        </x-slot>
+        <x-slot name="content">
+
+        </x-slot>
+        <x-slot name="footer">
+            <x-jet-secondary-button wire:click="$toggle('agreeModalBinnacle')" wire:loading.attr="disabled">
+                {{ __('Close') }}
+            </x-jet-secondary-button>
+        </x-slot>
+    </x-jet-dialog-modal>
+
+    {{-- Modal Editar Parte diario --}}
+    <x-jet-dialog-modal wire:model="editModalBinnacle">
+        <x-slot name="title">
+
+        </x-slot>
+        <x-slot name="content">
+
+        </x-slot>
+        <x-slot name="footer">
+            <x-jet-secondary-button wire:click="$toggle('editModalBinnacle')" wire:loading.attr="disabled">
                 {{ __('Close') }}
             </x-jet-secondary-button>
         </x-slot>
