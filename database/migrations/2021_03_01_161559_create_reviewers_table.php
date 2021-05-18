@@ -17,7 +17,7 @@ class CreateReviewersTable extends Migration
             $table->id();
 
             $table->date('date')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->integer('status')->nullable();
 
             $table->timestamps();

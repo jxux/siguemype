@@ -10,7 +10,8 @@ class Reviewer extends Model{
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     //Relacion uno a muchos inversa
-    public function binnacle(){
+    public function binnacles(){
         return $this->belongsto(Binnacle::class);
     }
+
 }

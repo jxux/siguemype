@@ -122,4 +122,9 @@ class Person extends Model
     {
         $this->attributes['contact'] = (is_null($value))?null:json_encode($value);
     }
+
+    //Relacion uno a muchos inversa
+    public function binnacles(){
+        return $this->belongsto(Binnacle::class);
+    }
 }

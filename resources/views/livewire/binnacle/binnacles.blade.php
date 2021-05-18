@@ -1,3 +1,4 @@
+
 <div wire:init="loadBinnacles">
     <div class="px-6 py-2 flex items-center">
         <x-jet-label value="Buscar por: "/>
@@ -169,7 +170,7 @@
                             </td>
                             <td class="px-6 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{$binnacle->client_id}}
+                                    {{$binnacle->Persons}}
                                 </div>
                             </td>
                             <td class="px-6 py-0">
@@ -194,11 +195,11 @@
                                 @endphp
                                 @if ($tr <= 25)
                                     <div class="text-xs text-gray-900">
-                                        {{$truncated}}
+                                        {!!$truncated!!}
                                     </div>
                                 @else
                                     <div class="text-xs text-gray-900">
-                                        {{ $truncated }}
+                                        {!! $truncated !!}
                                         <a class="cursor-pointer text-sm text-blue-600" wire:click="ModalBinnacleDescription({{ $binnacle->id }})">
                                             Ver más
                                         </a>
@@ -225,10 +226,17 @@
                             </td>
                             <td class="px-6 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{-- No se tiene observaciones --}}
+                                    {{-- @if($binnacle->Commentaries) --}}
+                                    @foreach ($binnacle->Commentaries as $Commentary)
+                                        {{ $Commentary->description }}
+                                    @endforeach
+                                    {{-- @else --}}
+                                        {{-- No se tiene observaciones --}}
+                                    {{-- @endif --}}
                                 </div>
                             </td>
                             <td class="px-4 py-0 text-xs font-medium">
+                                
                                 <button class="btn btn-green" wire:click="ModalEditBinnacle({{ $binnacle->id }})"><i class="far fa-edit"></i></button>
                                 {{-- <x-jet-dropdown>
                                     <x-slot name="trigger">
@@ -276,7 +284,8 @@
         </x-slot>
         <x-slot name="content">
             <p>
-                {!! $description !!}
+                {!! $description !!} <br>
+                {{ $date }}
             </p>
         </x-slot>
         <x-slot name="footer">
@@ -289,30 +298,36 @@
     {{-- Modal Agregar Parte diario --}}
     <x-jet-dialog-modal wire:model="agreeModalBinnacle">
         <x-slot name="title">
-
+            Nuevo evento
         </x-slot>
         <x-slot name="content">
-
+            @include('forms.binnacle')
         </x-slot>
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$toggle('agreeModalBinnacle')" wire:loading.attr="disabled">
                 {{ __('Close') }}
             </x-jet-secondary-button>
+            <x-jet-button wire:click="saveBinnacle()" wire:loading.attr="disabled" wire:target="save" class="disabled:opacity-25">
+                {{ __('Register') }}
+            </x-jet-button>
         </x-slot>
     </x-jet-dialog-modal>
 
     {{-- Modal Editar Parte diario --}}
     <x-jet-dialog-modal wire:model="editModalBinnacle">
         <x-slot name="title">
-
+            Editar evento
         </x-slot>
         <x-slot name="content">
-
+            @include('forms.binnacle')
         </x-slot>
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$toggle('editModalBinnacle')" wire:loading.attr="disabled">
                 {{ __('Close') }}
             </x-jet-secondary-button>
+            <x-jet-button wire:click="updateBinnacle()" wire:loading.attr="disabled" wire:target="save" class="disabled:opacity-25">
+                {{ __('Update') }}
+            </x-jet-button>
         </x-slot>
     </x-jet-dialog-modal>
 </div>

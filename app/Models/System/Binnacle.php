@@ -2,6 +2,7 @@
 
 namespace App\Models\System;
 
+use App\Http\Livewire\Admin\Persons;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -55,7 +56,6 @@ class Binnacle extends Model{
         return $this->belongsTo(CurrencyType::class, 'client_id');
     }
 
-
     public function getCategoryAttribute($value){
         return (is_null($value))?null:(object) json_decode($value);
     }
@@ -93,5 +93,10 @@ class Binnacle extends Model{
     //Relacion uno a muchos
     public function Commentaries(){
         return $this->hasMany(Reviewer::class);
+    }
+
+    //Relacion uno a muchos
+    public function Persons(){
+        return $this->hasMany(Persons::class);
     }
 }
