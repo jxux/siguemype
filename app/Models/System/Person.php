@@ -49,47 +49,38 @@ class Person extends Model
     //     });
     // }
 
-    public function addresses()
-    {
+    public function addresses(){
         return $this->hasMany(PersonAddress::class);
     }
-    public function identity_document_type()
-    {
+    public function identity_document_type(){
         return $this->belongsTo(IdentityDocumentType::class, 'identity_document_type_id');
     }
 
-    public function documents()
-    {
+    public function documents(){
         return $this->hasMany(Document::class, 'customer_id');
     }
 
-    public function country()
-    {
+    public function country(){
         return $this->belongsTo(Country::class);
     }
 
-    public function department()
-    {
+    public function department(){
         return $this->belongsTo(Department::class);
     }
 
-    public function province()
-    {
+    public function province(){
         return $this->belongsTo(Province::class);
     }
 
-    public function district()
-    {
+    public function district(){
         return $this->belongsTo(District::class);
     }
 
-    public function scopeWhereType($query, $type)
-    {
+    public function scopeWhereType($query, $type){
         return $query->where('type', $type);
     }
 
-    public function getAddressFullAttribute()
-    {
+    public function getAddressFullAttribute(){
         $address = trim($this->address);
         $address = ($address === '-' || $address === '')?'':$address.' ,';
         if ($address === '') {
@@ -98,33 +89,28 @@ class Person extends Model
         return "{$address} {$this->department->description} - {$this->province->description} - {$this->district->description}";
     }
 
-    public function more_address()
-    {
+    public function more_address(){
         return $this->hasMany(PersonAddress::class);
     }
 
-    public function person_type()
-    {
+    public function person_type(){
         return $this->belongsTo(PersonType::class);
     }
 
-    public function scopeWhereIsEnabled($query)
-    {
+    public function scopeWhereIsEnabled($query){
         return $query->where('enabled', true);
     }
 
-    public function getContactAttribute($value)
-    {
+    public function getContactAttribute($value){
         return (is_null($value))?null:(object) json_decode($value);
     }
 
-    public function setContactAttribute($value)
-    {
+    public function setContactAttribute($value)   {
         $this->attributes['contact'] = (is_null($value))?null:json_encode($value);
     }
 
-    //Relacion uno a muchos inversa
-    public function binnacles(){
+    //Relacion uno a uno
+    public function Binnacles(){
         return $this->belongsto(Binnacle::class);
     }
 }

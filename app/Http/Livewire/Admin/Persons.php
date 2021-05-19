@@ -88,6 +88,7 @@ class Persons extends Component{
             $persons = [];
         }
 
+
         return view('livewire.admin.persons', compact('persons', 'identity_document_types', 'countries', 'departments', 'provinces', 'districts', 'locations', 'identity_document_types'));
     }
 

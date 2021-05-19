@@ -1,4 +1,3 @@
-
 <div wire:init="loadBinnacles">
     <div class="px-6 py-2 flex items-center">
         <x-jet-label value="Buscar por: "/>
@@ -7,7 +6,10 @@
             <option value="description">Descripcion</option>
             <option value="period">Periodo</option>
         </select>
-        <x-jet-input type="text" wire:model="search" class="flex-1 mr-4 text-xs" placeholder="Buscar por centro de costo"></x-input>
+        <div wire:poll>
+            Hora: {{ now()->format('h:m:s a') }}
+        </div>
+        <x-jet-input type="{{$type}}" wire:model="search" class="flex-1 mr-4 text-xs" placeholder="Buscar por centro de costo"></x-input>
         <x-jet-button wire:click="ModalBinnacle">
             Añadir
         </x-jet-button>
@@ -155,12 +157,12 @@
                             </td>
                             <td class="px-6 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{$binnacle->start_time->format('h:m a')}}
+                                    {{$binnacle->start_time}}
                                 </div>
                             </td>
                             <td class="px-6 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{$binnacle->end_time->format('h:m a')}}
+                                    {{$binnacle->end_time}}
                                 </div>
                             </td>
                             <td class="px-6 py-0">
@@ -170,12 +172,12 @@
                             </td>
                             <td class="px-6 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{$binnacle->Persons}}
+                                    {{ $binnacle->Person->internal_code }}-{{ $binnacle->Person->name }}
                                 </div>
                             </td>
                             <td class="px-6 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{$binnacle->category_id}}
+                                    {{ $binnacle->Binnacles_category->code }}-{{$binnacle->Binnacles_category->name}}
                                 </div>
                             </td>
                             <td class="px-6 py-0">
@@ -185,7 +187,7 @@
                             </td>
                             <td class="px-6 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{$binnacle->service_id}}
+                                    {{$binnacle->Binnacles_Service->code}}-{{$binnacle->Binnacles_Service->name}}
                                 </div>
                             </td>
                             <td class="px-6 py-0">
@@ -226,17 +228,16 @@
                             </td>
                             <td class="px-6 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{-- @if($binnacle->Commentaries) --}}
-                                    @foreach ($binnacle->Commentaries as $Commentary)
-                                        {{ $Commentary->description }}
-                                    @endforeach
-                                    {{-- @else --}}
-                                        {{-- No se tiene observaciones --}}
-                                    {{-- @endif --}}
+                                    @if (count($binnacle->Commentaries))
+                                        @foreach ($binnacle->Commentaries as $Commentary)
+                                            {{ $Commentary->description }}
+                                        @endforeach
+                                    @else
+                                        No se tiene observaciones
+                                    @endif
                                 </div>
                             </td>
                             <td class="px-4 py-0 text-xs font-medium">
-                                
                                 <button class="btn btn-green" wire:click="ModalEditBinnacle({{ $binnacle->id }})"><i class="far fa-edit"></i></button>
                                 {{-- <x-jet-dropdown>
                                     <x-slot name="trigger">
@@ -284,8 +285,8 @@
         </x-slot>
         <x-slot name="content">
             <p>
-                {!! $description !!} <br>
-                {{ $date }}
+                {!! $description !!}
+                {{-- {{ $date }} --}}
             </p>
         </x-slot>
         <x-slot name="footer">

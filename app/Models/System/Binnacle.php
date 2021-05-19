@@ -2,7 +2,6 @@
 
 namespace App\Models\System;
 
-use App\Http\Livewire\Admin\Persons;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -64,9 +63,9 @@ class Binnacle extends Model{
         $this->attributes['category'] = (is_null($value))?null:json_encode($value);
     }
 
-    public function Category() {
-        return $this->belongsTo(BinnacleCategory::class, 'category_id');
-    }
+    // public function Category() {
+    //     return $this->hasOne(Binnacles_category::class, 'id', 'category_id');
+    // }
 
 
     public function getServiceAttribute($value){
@@ -77,9 +76,9 @@ class Binnacle extends Model{
         $this->attributes['service'] = (is_null($value))?null:json_encode($value);
     }
 
-    public function Service() {
-        return $this->belongsTo(BinnacleService::class, 'service_id');
-    }
+    // public function Service() {
+    //     return $this->belongsTo(BinnacleService::class, 'service_id');
+    // }
 
 
     public function getUserAttribute($value){
@@ -95,8 +94,18 @@ class Binnacle extends Model{
         return $this->hasMany(Reviewer::class);
     }
 
-    //Relacion uno a muchos
-    public function Persons(){
-        return $this->hasMany(Persons::class);
+    //Relacion uno a uno
+    public function Person(){
+        return $this->hasOne(Person::class, 'id', 'client_id');
+    }
+
+    //Relacion uno a uno
+    public function Binnacles_category(){
+        return $this->hasOne(Binnacles_category::class, 'id', 'category_id');
+    }
+
+    //Relacion uno a uno
+    public function Binnacles_Service() {
+        return $this->hasOne(Binnacles_Service::class, 'id', 'service_id');
     }
 }
