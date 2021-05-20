@@ -90,7 +90,7 @@ class Binnacles extends Component{
             'date' => $this->date,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
-            // 'hour' =>  Carbon::parse($this->end_time)->diffInHours($this->start_time),
+            'hour' =>  self::convert($this->start_time, $this->end_time),
             'client_id' => $this->client_id,
             'category_id' => $this->category_id,
             'service_id' => $this->service_id,
@@ -109,8 +109,8 @@ class Binnacles extends Component{
         $this->editModalBinnacle = true;
         $this->binnacle = Binnacle::findOrFail($binnacleId);
         $this->date = $this->binnacle->date->format('Y-m-d');
-        $this->start_time = $this->binnacle->start_time;
-        $this->end_time = $this->binnacle->end_time;
+        $this->start_time = $this->binnacle->start_time->isoformat('HH:mm');
+        $this->end_time = $this->binnacle->end_time->isoformat('HH:mm');
         $this->client_id = $this->binnacle->client_id;
         $this->category_id = $this->binnacle->category_id;
         $this->service_id = $this->binnacle->service_id;
@@ -135,7 +135,7 @@ class Binnacles extends Component{
             'user' => UserInput::set(auth()->user()->id),
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
-            // 'hour' =>  self::convert($this->start_time, $this->end_time),
+            'hour' =>  self::convert($this->start_time, $this->end_time),
             'client_id' => $this->client_id,
             'category_id' => $this->category_id,
             'service_id' => $this->service_id,
@@ -151,7 +151,7 @@ class Binnacles extends Component{
 
     public static function convert($start_time, $end_time){
         $tiempo = Carbon::parse($start_time)->diffInMinutes($end_time);
-        $time = Carbon::parse($tiempo)->format('H:i'); 
+        $time = intdiv($tiempo, 60).':'. ($tiempo % 60);
         return $time;
     }
 
@@ -164,7 +164,7 @@ class Binnacles extends Component{
         if($this->readyToLoad){
             $binnacles = Binnacle::where($this->columns, 'like', '%'. $this->search . '%')
                             ->orderBy($this->sort, $this->direction)
-                            ->where('user_id',auth()->user()->id)
+                            // ->where('user_id',auth()->user()->id)
                             // ->whereBetween('date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
                             ->paginate(20); 
         }else{

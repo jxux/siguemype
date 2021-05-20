@@ -59,8 +59,8 @@
 <div class="grid grid-cols-1 gap-4">
     <div class="mb-4">
         <x-jet-label value="Descripción"/>
-        <textarea name="description" type="text" class="form-control w-full" wire:model.defer="description" rows="6"></textarea>
-        {{-- <textarea name="description" class="border-2 border-gray-500"></textarea> --}}
+        {{-- <textarea id="description" name="description" type="text" class="form-control w-full" wire:model.defer="description" rows="6"></textarea> --}}
+        <x-textarea wire:model="description"/>
         <x-jet-input-error for="description"/>
     </div>
 </div>

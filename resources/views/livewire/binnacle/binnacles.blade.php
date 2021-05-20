@@ -1,14 +1,11 @@
 <div wire:init="loadBinnacles">
     <div class="px-6 py-2 flex items-center">
         <x-jet-label value="Buscar por: "/>
-        <select class="mx-4 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm text-xs" wire:model="columns">
+        <select class="mx-4 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm text-xs" wire:model="columns" id="select2">
             <option value="date">Fecha</option>
             <option value="description">Descripcion</option>
             <option value="period">Periodo</option>
         </select>
-        <div wire:poll>
-            Hora: {{ now()->format('h:m:s a') }}
-        </div>
         <x-jet-input type="{{$type}}" wire:model="search" class="flex-1 mr-4 text-xs" placeholder="Buscar por centro de costo"></x-input>
         <x-jet-button wire:click="ModalBinnacle">
             Añadir
@@ -19,7 +16,7 @@
             <table class="min-w-full divide-y divide-gray-200 mx-1">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('date')">
+                        <th scope="col" class="w-24 cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('date')">
                             Fecha
                             @if ($sort == 'date') 
                                 @if ($direction == 'asc')
@@ -31,7 +28,7 @@
                                 <i class="fas fa-sort float-right mt-1"></i>
                             @endif
                         </th>
-                        <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('start_time')">
+                        <th scope="col" class="w-24 cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('start_time')">
                             Inicio
                             @if ($sort == 'start_time') 
                                     @if ($direction == 'asc')
@@ -43,7 +40,7 @@
                                     <i class="fas fa-sort float-right mt-1"></i>
                                 @endif
                         </th>
-                        <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('end_time')">
+                        <th scope="col" class="w-24 cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('end_time')">
                             Fin
                             @if ($sort == 'end_time') 
                                     @if ($direction == 'asc')
@@ -55,7 +52,7 @@
                                     <i class="fas fa-sort float-right mt-1"></i>
                                 @endif
                         </th>
-                        <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('hour')">
+                        <th scope="col" class="w-24 cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('hour')">
                             Tiempo
                             @if ($sort == 'hour') 
                                 @if ($direction == 'asc')
@@ -67,7 +64,7 @@
                                 <i class="fas fa-sort float-right mt-1"></i>
                             @endif
                         </th>
-                        <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('client_id')">
+                        <th scope="col" class="w-24 cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('client_id')">
                             Cliente
                             @if ($sort == 'client_id') 
                                 @if ($direction == 'asc')
@@ -79,7 +76,7 @@
                                 <i class="fas fa-sort float-right mt-1"></i>
                             @endif
                         </th>
-                        <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('category_id')">
+                        <th scope="col" class="w-24 cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('category_id')">
                             Cuenta
                             @if ($sort == 'category_id') 
                                 @if ($direction == 'asc')
@@ -91,7 +88,7 @@
                                 <i class="fas fa-sort float-right mt-1"></i>
                             @endif
                         </th>
-                        <th scope="col" class="w-32 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('period')">
+                        <th scope="col" class="w-26 cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('period')">
                             Periodo
                             @if ($sort == 'period') 
                                 @if ($direction == 'asc')
@@ -103,7 +100,7 @@
                                 <i class="fas fa-sort float-right mt-1"></i>
                             @endif
                         </th>
-                        <th scope="col" class="w-32 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('service_id')">
+                        <th scope="col" class="w-32 cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('service_id')">
                             C_costo
                             @if ($sort == 'service_id') 
                                 @if ($direction == 'asc')
@@ -115,7 +112,7 @@
                                 <i class="fas fa-sort float-right mt-1"></i>
                             @endif
                         </th>
-                        <th scope="col" class="cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('description')">
+                        <th scope="col" class="cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('description')">
                             Descripción
                             @if ($sort == 'description') 
                                 @if ($direction == 'asc')
@@ -127,7 +124,7 @@
                                 <i class="fas fa-sort float-right mt-1"></i>
                             @endif
                         </th>
-                        <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('status')">
+                        <th scope="col" class="w-28 cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" wire:click="order('status')">
                             Avance
                             @if ($sort == 'status') 
                                 @if ($direction == 'asc')
@@ -139,10 +136,10 @@
                                 <i class="fas fa-sort float-right mt-1"></i>
                             @endif
                         </th>
-                        <th scope="col" class="w-28 cursor-pointer px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="w-28 cursor-pointer px-3 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Observaciones | Revisión
                         </th>
-                        <th scope="col" class="relative px-6 py-3">
+                        <th scope="col" class="relative px-3 py-3">
                             <span class="sr-only">Opciones</span>
                         </th>
                     </tr>
@@ -150,47 +147,47 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach ($binnacles as $binnacle)
                         <tr>
-                            <td class="px-6 py-0">
+                            <td class="px-3 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{$binnacle->date->format('d/m/Y')}}
+                                    {{$binnacle->date->isoFormat('D/MM/YYYY')}}
                                 </div>
                             </td>
-                            <td class="px-6 py-0">
+                            <td class="px-3 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{$binnacle->start_time}}
+                                    {{$binnacle->start_time->isoFormat('hh:mm a')}}
                                 </div>
                             </td>
-                            <td class="px-6 py-0">
+                            <td class="px-3 py-0">
                                 <div class="text-xs text-gray-900">
-                                    {{$binnacle->end_time}}
+                                    {{$binnacle->end_time->isoFormat('hh:mm a')}}
                                 </div>
                             </td>
-                            <td class="px-6 py-0">
+                            <td class="px-3 py-0">
                                 <div class="text-xs text-gray-900">
                                     {{$binnacle->hour}}
                                 </div>
                             </td>
-                            <td class="px-6 py-0">
+                            <td class="px-3 py-0">
                                 <div class="text-xs text-gray-900">
                                     {{ $binnacle->Person->internal_code }}-{{ $binnacle->Person->name }}
                                 </div>
                             </td>
-                            <td class="px-6 py-0">
+                            <td class="px-3 py-0">
                                 <div class="text-xs text-gray-900">
                                     {{ $binnacle->Binnacles_category->code }}-{{$binnacle->Binnacles_category->name}}
                                 </div>
                             </td>
-                            <td class="px-6 py-0">
+                            <td class="px-3 py-0">
                                 <div class="text-xs text-gray-900">
                                     {{$binnacle->period->formatLocalized('%b-%Y')}}
                                 </div>
                             </td>
-                            <td class="px-6 py-0">
+                            <td class="px-3 py-0">
                                 <div class="text-xs text-gray-900">
                                     {{$binnacle->Binnacles_Service->code}}-{{$binnacle->Binnacles_Service->name}}
                                 </div>
                             </td>
-                            <td class="px-6 py-0">
+                            <td class="px-3 py-0">
                                 @php
                                     $truncated = Str::limit($binnacle->description, 25);
                                     $tr = Str::length($truncated)
@@ -208,7 +205,7 @@
                                     </div>
                                 @endif
                             </td>
-                            <td class="px-6 py-1">
+                            <td class="px-3 py-1">
                                 <div class="text-xs text-gray-900">
                                     @if($binnacle->status == 100)
                                         <span class="border-green-600 border rounded-full py-0 px-4 bg-green-600 text-xs text-white">
@@ -226,7 +223,7 @@
                                     {{-- {{$binnacle->status}} --}}
                                 </div>
                             </td>
-                            <td class="px-6 py-0">
+                            <td class="px-3 py-0">
                                 <div class="text-xs text-gray-900">
                                     @if (count($binnacle->Commentaries))
                                         @foreach ($binnacle->Commentaries as $Commentary)
@@ -299,7 +296,12 @@
     {{-- Modal Agregar Parte diario --}}
     <x-jet-dialog-modal wire:model="agreeModalBinnacle">
         <x-slot name="title">
-            Nuevo evento
+            <div class="font-semibold flex items-center">
+                <p class="flex-1"> Nuevo evento <p/> 
+                <div wire:poll class="text-right">
+                    {{ now()->isoFormat('D MMMM YYYY, hh:mm A') }}
+                </div>
+            </div>
         </x-slot>
         <x-slot name="content">
             @include('forms.binnacle')
@@ -317,7 +319,12 @@
     {{-- Modal Editar Parte diario --}}
     <x-jet-dialog-modal wire:model="editModalBinnacle">
         <x-slot name="title">
-            Editar evento
+            <div class="font-semibold flex items-center">
+                <p class="flex-1"> Editar evento <p/> 
+                <div wire:poll class="text-right">
+                    {{ now()->isoFormat('D MMMM YYYY, hh:mm A') }}
+                </div>
+            </div>
         </x-slot>
         <x-slot name="content">
             @include('forms.binnacle')
