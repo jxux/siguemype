@@ -15,6 +15,8 @@
         <link rel="stylesheet" href="{{ asset('vendor/VanillaToasts/vanillatoasts.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
 
+        @stack('style')
+
         @livewireStyles
 
         

@@ -6,7 +6,13 @@
             <option value="description">Descripcion</option>
             <option value="period">Periodo</option>
         </select>
-        <x-jet-input type="{{$type}}" wire:model="search" class="flex-1 mr-4 text-xs" placeholder="Buscar por centro de costo"></x-input>
+        @if ($columns == 'date')
+            <x-jet-input type="date" wire:model="search" class="flex-1 mr-4 text-xs"></x-input>
+        @elseif($columns == 'period')
+            <x-jet-input type="month" wire:model="search" class="flex-1 mr-4 text-xs"></x-input>
+        @else
+            <x-jet-input type="text" wire:model="search" class="flex-1 mr-4 text-xs" placeholder="Buscar por descripción"></x-input>   
+        @endif
         <x-jet-button wire:click="ModalBinnacle">
             Añadir
         </x-jet-button>
@@ -198,10 +204,7 @@
                                     </div>
                                 @else
                                     <div class="text-xs text-gray-900">
-                                        {!! $truncated !!}
-                                        <a class="cursor-pointer text-sm text-blue-600" wire:click="ModalBinnacleDescription({{ $binnacle->id }})">
-                                            Ver más
-                                        </a>
+                                        {!! $truncated !!} <a class="cursor-pointer text-sm text-blue-600" wire:click="ModalBinnacleDescription({{ $binnacle->id }})">Ver más</a>
                                     </div>
                                 @endif
                             </td>
@@ -211,7 +214,7 @@
                                         <span class="border-green-600 border rounded-full py-0 px-4 bg-green-600 text-xs text-white">
                                             Terminado 
                                         </span>
-                                    @elseif($binnacle->status <= 99 && $binnacle->status >= 25) 
+                                    @elseif($binnacle->status <= 99 && $binnacle->status >= 26) 
                                         <span class="border-blue-600 border rounded-full py-0 px-4 bg-blue-600 text-xs text-white">
                                             Pendiente
                                         </span>
@@ -220,35 +223,71 @@
                                             Pendiente
                                         </span>
                                     @endif
-                                    {{-- {{$binnacle->status}} --}}
                                 </div>
                             </td>
-                            <td class="px-3 py-0">
-                                <div class="text-xs text-gray-900">
+                            <td class="px-3 py-1">
+                                <div class="text-xs text-gray-900" x-data="{open:false}">
                                     @if (count($binnacle->Commentaries))
-                                        @foreach ($binnacle->Commentaries as $Commentary)
-                                            {{ $Commentary->description }}
-                                        @endforeach
+                                        <button class="btn btn-blue font-light" @click="open=true">
+                                            {{ count($binnacle->Commentaries) }}
+                                        </button>
+                                        <div x-show="open" @click.away="open = false" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true"
+                                            x-transition:enter="transition ease-out duration-300"
+                                            x-transition:enter-start="opacity-0 transform scale-90"
+                                            x-transition:enter-end="opacity-100 transform scale-100"
+                                            x-transition:leave="transition ease-in duration-300"
+                                            x-transition:leave-start="opacity-100 transform scale-100"
+                                            x-transition:leave-end="opacity-0 transform scale-90">
+                                            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                                                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                                        <div class="sm:flex sm:items-start">
+                                                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                                                                <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                                                </svg>
+                                                            </div>
+                                                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Observaciones</h3>
+                                                                <div class="mt-2">
+                                                                    @foreach ($binnacle->Commentaries as $item)
+                                                                    <div class="bg-green-100 mb-3 rounded-md">
+                                                                        <div class="flex items-center">
+                                                                            <p class="text-sm text-gray-700 m-2 pt-1 flex-1">{{ $item->User->nick_name }}</p>
+                                                                            <p class="text-sm text-gray-700 m-2 flex-1">Estado : {{ $item->status }}</p>
+                                                                            <p class="text-sm text-gray-700 m-2 text-right">{{ $item->date }}</p>
+                                                                        </div> 
+                                                                        <div class="bg-green-200 rounded-md">
+                                                                            <p class="text-sm text-gray-700 py-2 mx-2">{{ $item->description }}</p>
+                                                                        </div> 
+                                                                    </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                                        <button @click="open=false" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                                            Cerrar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @else
                                         No se tiene observaciones
                                     @endif
+                                    <button class="btn btn-green">+</button>
+                                        {{-- @livewire('show-post', ['post' => $post]) --}}
+                                        {{-- @livewire('binnacle.reviewers') --}}
                                 </div>
                             </td>
                             <td class="px-4 py-0 text-xs font-medium">
-                                <button class="btn btn-green" wire:click="ModalEditBinnacle({{ $binnacle->id }})"><i class="far fa-edit"></i></button>
-                                {{-- <x-jet-dropdown>
-                                    <x-slot name="trigger">
-                                        <button class="cursor-pointer px-6 py-2 text-xs text-blue-500">Opciones</button>
-                                    </x-slot>
-                                    <x-slot name="content">
-                                        <x-jet-dropdown-link class="cursor-pointer pl-6 pr-16 py-2 text-xs text-green-500" wire:click="ModalEditBinnacle({{ $binnacle->id }})">
-                                            {{ __('Edit') }}
-                                        </x-jet-dropdown-link>
-                                        <x-jet-dropdown-link class="cursor-pointer pl-6 pr-16 py-2 text-xs text-red-500" wire:click="confirmBinnacleDeletion({{ $binnacle->id }})">
-                                            {{ __('Delete') }}
-                                        </x-jet-dropdown-link>
-                                    </x-slot>
-                                </x-jet-dropdown> --}}
+                                @if(Carbon\Carbon::parse($binnacle->created_at)->diffInMinutes(now()) <= 120)
+                                    <button class="btn btn-green" wire:click="ModalEditBinnacle({{ $binnacle->id }})"><i class="far fa-edit"></i></button>
+                                @endif
                             </td> 
                         </tr>
                     @endforeach
@@ -298,13 +337,15 @@
         <x-slot name="title">
             <div class="font-semibold flex items-center">
                 <p class="flex-1"> Nuevo evento <p/> 
-                <div wire:poll class="text-right">
+                {{-- <div wire:poll class="text-right">
                     {{ now()->isoFormat('D MMMM YYYY, hh:mm A') }}
-                </div>
+                </div> --}}
             </div>
         </x-slot>
         <x-slot name="content">
-            @include('forms.binnacle')
+            @if ($agreeModalBinnacle)
+                @include('forms.binnacle')
+            @endif
         </x-slot>
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$toggle('agreeModalBinnacle')" wire:loading.attr="disabled">
@@ -321,9 +362,9 @@
         <x-slot name="title">
             <div class="font-semibold flex items-center">
                 <p class="flex-1"> Editar evento <p/> 
-                <div wire:poll class="text-right">
+                {{-- <div wire:poll class="text-right">
                     {{ now()->isoFormat('D MMMM YYYY, hh:mm A') }}
-                </div>
+                </div> --}}
             </div>
         </x-slot>
         <x-slot name="content">
@@ -338,4 +379,5 @@
             </x-jet-button>
         </x-slot>
     </x-jet-dialog-modal>
+    {{-- @livewire('binnacle.reviewers', ['binnacle_id' => $binnacles]) --}}
 </div>

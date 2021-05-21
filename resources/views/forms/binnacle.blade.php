@@ -1,3 +1,8 @@
+@push('style')
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+
+@endpush
+
 <div class="grid grid-cols-3 gap-4">
     <div class="mb-4">
         <x-jet-label value="Fecha"/>
@@ -59,8 +64,8 @@
 <div class="grid grid-cols-1 gap-4">
     <div class="mb-4">
         <x-jet-label value="Descripción"/>
-        {{-- <textarea id="description" name="description" type="text" class="form-control w-full" wire:model.defer="description" rows="6"></textarea> --}}
-        <x-textarea wire:model="description"/>
+        <textarea id="description" name="description" type="text" class="form-control w-full" wire:model.defer="description" rows="6"></textarea>
+        {{-- <x-textarea wire:model="description"/> --}}
         <x-jet-input-error for="description"/>
     </div>
 </div>
@@ -79,3 +84,15 @@
         <x-jet-input-error for="status"/>
     </div>
 </div>
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/26.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+        .create( document.querySelector( '#description' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+    </script>
+@endpush

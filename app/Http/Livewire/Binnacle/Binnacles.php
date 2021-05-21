@@ -10,6 +10,7 @@ use App\Models\System\Binnacle;
 use App\Models\System\Binnacles_category;
 use App\Models\System\Binnacles_service;
 use App\Models\System\Person;
+use App\Models\System\Reviewer;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,8 +19,7 @@ class Binnacles extends Component{
 
     use WithPagination;
 
-    public $columns = 'date', 
-           $type ='date' ;
+    public $columns = 'date';
            
     public $search;
     public $sort = 'date';
@@ -37,10 +37,13 @@ class Binnacles extends Component{
            $client,
            $category,
            $service,
-           $user;
+           $user,
+           $reviews,
+           $review;
 
     public $readyToLoad = false;
     public $binnacleDescription = false;
+    public $binnacleReviewer = false;
 
     public $agreeModalBinnacle = false;
     public $editModalBinnacle = false;
@@ -62,6 +65,12 @@ class Binnacles extends Component{
         $this->binnacleDescription = true;
         $this->binnacle = Binnacle::findOrFail($binnacleId);
         $this->description = $this->binnacle->description;
+    }
+
+    public function ModalReviewerDescription($binnacleId){
+        $this->binnacleReviewer = true;
+        $this->reviews = Reviewer::findOrFail($binnacleId);
+        $this->review = $this->reviews->description;
     }
 
     public function updatingSearch(){
@@ -150,9 +159,9 @@ class Binnacles extends Component{
 
 
     public static function convert($start_time, $end_time){
-        $tiempo = Carbon::parse($start_time)->diffInMinutes($end_time);
-        $time = intdiv($tiempo, 60).':'. ($tiempo % 60);
-        return $time;
+        $time = Carbon::parse($start_time)->diffInMinutes($end_time);
+        $hour = intdiv($time, 60).':'. ($time % 60);
+        return $hour;
     }
 
 
@@ -164,6 +173,7 @@ class Binnacles extends Component{
         if($this->readyToLoad){
             $binnacles = Binnacle::where($this->columns, 'like', '%'. $this->search . '%')
                             ->orderBy($this->sort, $this->direction)
+                            ->orderBy('start_time', 'desc')
                             // ->where('user_id',auth()->user()->id)
                             // ->whereBetween('date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
                             ->paginate(20); 

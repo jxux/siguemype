@@ -72,20 +72,22 @@
                                     {{$cuenta->name}}
                                 </div>
                             </td>
-                            <td class="px-4 py-0 text-xs font-medium">                            
-                                <x-jet-dropdown>
-                                    <x-slot name="trigger">
-                                        <button class="cursor-pointer px-6 py-2 text-xs text-blue-500">Opciones</button>
-                                    </x-slot>
-                                    <x-slot name="content">
-                                        <x-jet-dropdown-link class="cursor-pointer pl-6 pr-16 py-2 text-xs text-green-500" wire:click="ModalEditCuenta({{ $cuenta->id }})">
-                                            {{ __('Edit') }}
-                                        </x-jet-dropdown-link>
-                                        <x-jet-dropdown-link class="cursor-pointer pl-6 pr-16 py-2 text-xs text-red-500" wire:click="confirmCuentaDeletion({{ $cuenta->id }})">
-                                            {{ __('Delete') }}
-                                        </x-jet-dropdown-link>
-                                    </x-slot>
-                                </x-jet-dropdown>
+                            <td class="px-4 py-0 text-xs font-medium">
+                                <div class="ml-3 relative">
+                                    <x-jet-dropdown>
+                                        <x-slot name="trigger">
+                                            <button class="cursor-pointer px-6 py-2 text-xs text-blue-500">Opciones</button>
+                                        </x-slot>
+                                        <x-slot name="content">
+                                            <x-jet-dropdown-link class="cursor-pointer pl-6 pr-16 py-2 text-xs text-green-500" wire:click="ModalEditCuenta({{ $cuenta->id }})">
+                                                {{ __('Edit') }}
+                                            </x-jet-dropdown-link>
+                                            <x-jet-dropdown-link class="cursor-pointer pl-6 pr-16 py-2 text-xs text-red-500" wire:click="confirmCuentaDeletion({{ $cuenta->id }})">
+                                                {{ __('Delete') }}
+                                            </x-jet-dropdown-link>
+                                        </x-slot>
+                                    </x-jet-dropdown>
+                                </div>
                             </td>                           
                         </tr>
                     @endforeach

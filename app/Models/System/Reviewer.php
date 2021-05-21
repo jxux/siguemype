@@ -14,4 +14,7 @@ class Reviewer extends Model{
         return $this->belongsto(Binnacle::class);
     }
 
+    public function User(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
